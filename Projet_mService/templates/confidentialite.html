@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="{% static 'img/fav.png' %}">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Karma Shop</title>
+
+	<!--
+            CSS
+            ============================================= -->
+	<link rel="stylesheet" href="{% static 'css/linearicons.css' %}">
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+	<link rel="stylesheet" href="{% static 'css/nouislider.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header class="header_area sticky-header">
+		<div class="main_menu">
+			<nav class="navbar navbar-expand-lg navbar-light main_box">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<a class="navbar-brand logo_h" href="{% url  'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+						<ul class="nav navbar-nav menu_nav ml-auto">
+							<li class="nav-item"><a class="nav-link" href="{% url  'index' %}">Home</a></li>
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Shop</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url  'category' %}">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'single-product' %}">Product Details</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'checkout' %}">Product Checkout</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'cart' %}">Shopping Cart</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'confirmation' %}">Confirmation</a></li>
+								</ul>
+							</li>
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Blog</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="{% url  'blog' %}">Blog</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'single-blog' %}">Blog Details</a></li>
+								</ul>
+							</li>
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Pages</a>
+								<ul class="dropdown-menu">
+									<!-- <li class="nav-item"><a class="nav-link" href="{% url  'login' %}">Login</a></li> -->
+									<li class="nav-item"><a class="nav-link" href="{% url  'tracking' %}">Tracking</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'elements' %}">Elements</a></li>
+								</ul>
+							</li>
+                            <!-- ///////////////////////// -->
+							<li class="nav-item submenu dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">A propos</a>
+								<ul class="dropdown-menu">
+									<!-- <li class="nav-item"><a class="nav-link" href="{% url  'login' %}">Login</a></li> -->
+									<li class="nav-item"><a class="nav-link" href="{% url  'confidentialite' %}">Confidentialité</a></li>
+									<li class="nav-item"><a class="nav-link" href="{% url  'qui_somme_nous' %}">Qui somme nous</a></li>
+								</ul>
+							</li>
+							<!-- ///////////////////////// -->
+							<li class="nav-item active"><a class="nav-link" href="{% url  'contact' %}">contact</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+{% if user.is_authenticated %}
+							<li class="nav-item"><a href="{% url  'cart' %}" class="cart"><span class="ti-bag"></span></a></li>
+                        	{% endif %}							<li class="nav-item">
+								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+							</li>
+							
+							{% if user.is_authenticated %}
+							<li class="nav-item">
+								<a href="#"><p style="padding-top: 25px;">{{ user.username }}</a>
+								<a href="{% url  'logout_user' %}"><i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 25px; font-size: 20px; color: black;"></i></a>
+							</li>
+							{% else %}
+							<li class="nav-item">
+								<a href="{% url  'login' %}"><i class="fa fa-user-circle-o" aria-hidden="true" style="padding-top: 25px; font-size: 30px; color: black;"></i></a>
+							</li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Confidentialité Us</h1>
+					<nav class="d-flex align-items-center">
+						<a href="{% url  'index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{% url  'category' %}">Confidentialité</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Confidentialité Area =================-->
+	
+
+
+
+
+<div class="container">
+        <h1>Politique de confidentialité</h1>
+        <div class="privacy-policy">
+            <p>Votre vie privée est importante pour nous. Cette politique de confidentialité explique quelles informations nous collectons, pourquoi nous les collectons et comment nous les utilisons.</p>
+            <p>Nous collectons des informations lorsque vous vous inscrivez sur notre site, passez une commande, vous abonnez à notre newsletter ou remplissez un formulaire.</p>
+            <p>Les informations que nous collectons peuvent inclure votre nom, votre adresse e-mail, votre adresse postale et d'autres informations que vous choisissez de nous fournir.</p>
+            <p>Nous utilisons vos informations pour traiter les commandes, personnaliser votre expérience et vous envoyer des e-mails promotionnels concernant nos produits.</p>
+            <p>Nous ne partageons pas vos informations avec des tiers. Vos informations sont stockées de manière sécurisée et ne sont accessibles qu'aux employés autorisés de notre entreprise.</p>
+            <p>Si vous avez des questions concernant notre politique de confidentialité, veuillez nous Confidentialitéer à l'adresse suivante : privacy@exemple.com</p>
+        </div>
+
+        <h2>Règles d'usage</h2>
+        <div class="usage-rules">
+            <p>Nous vous remercions de votre intérêt pour nos produits. Afin de garantir une expérience positive pour tous nos clients, nous vous prions de respecter les règles suivantes :</p>
+            <ul>
+                <li>Ne pas utiliser notre site à des fins illégales ou frauduleuses.</li>
+                <li>Ne pas perturber le fonctionnement normal de notre site.</li>
+                <li>Ne pas violer les droits de propriété intellectuelle associés à notre entreprise, y compris les marques déposées et le contenu protégé par le droit d'auteur.</li>
+                <li>Ne pas publier de contenu offensant, diffamatoire ou discriminatoire sur notre site.</li>
+                <li>Respecter les conditions de paiement et de livraison lors de l'achat de nos produits.</li>
+            </ul>
+            <p>Nous nous réservons le droit de suspendre ou de résilier votre compte si vous enfreignez ces règles d'usage.</p>
+        </div>
+    </div>
+
+
+
+
+	<!--================Confidentialité Area =================-->
+
+	<!-- start footer Area -->
+	<footer class="footer-area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3  col-md-6 col-sm-6">
+					<div class="single-footer-widget">
+						<h6>About Us</h6>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
+							magna aliqua.
+						</p>
+					</div>
+				</div>
+				<div class="col-lg-4  col-md-6 col-sm-6">
+					<div class="single-footer-widget">
+						<h6>Newsletter</h6>
+						<p>Stay update with our latest</p>
+						<div class="" id="mc_embed_signup">
+
+							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+							 method="get" class="form-inline">
+
+								<div class="d-flex flex-row">
+
+									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+									 required="" type="email">
+
+
+									<button class="click-btn btn btn-default"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+									<div style="position: absolute; left: -5000px;">
+										<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+									</div>
+
+									<!-- <div class="col-lg-4 col-md-4">
+													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+												</div>  -->
+								</div>
+								<div class="info"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3  col-md-6 col-sm-6">
+					<div class="single-footer-widget mail-chimp">
+						<h6 class="mb-20">Instragram Feed</h6>
+						<ul class="instafeed d-flex flex-wrap">
+							<li><img src="{% static 'img/i1.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i2.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i3.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i4.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i5.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i6.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i7.jpg' %}" alt=""></li>
+							<li><img src="{% static 'img/i8.jpg' %}" alt=""></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-6 col-sm-6">
+					<div class="single-footer-widget">
+						<h6>Follow Us</h6>
+						<p>Let us be social</p>
+						<div class="footer-social d-flex align-items-center">
+							<a href="#"><i class="fa fa-facebook"></i></a>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-dribbble"></i></a>
+							<a href="#"><i class="fa fa-behance"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+				<p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p>
+			</div>
+		</div>
+	</footer>
+	<!-- End footer Area -->
+
+	<!--================Confidentialité Success and Error message Area =================-->
+	<div id="success" class="modal modal-message fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<i class="fa fa-close"></i>
+					</button>
+					<h2>Thank you</h2>
+					<p>Your message is successfully sent...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modals error -->
+
+	<div id="error" class="modal modal-message fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<i class="fa fa-close"></i>
+					</button>
+					<h2>Sorry !</h2>
+					<p> Something went wrong </p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Confidentialité Success and Error message Area =================-->
+
+
+	<script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 crossorigin="anonymous"></script>
+	<script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+	<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+	<script src="{% static 'js/jquery.sticky.js' %}"></script>
+	<script src="{% static 'js/nouislider.min.js' %}"></script>
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<!--gmaps Js-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+	<script src="{% static 'js/gmaps.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

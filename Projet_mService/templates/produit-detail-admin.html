@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Produit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Empêche le défilement horizontal */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-detail {
+            text-align: center; /* Centrer le texte */
+        }
+
+        .product-images {
+            display: flex; /* Utiliser Flexbox pour disposer les images en ligne */
+            overflow-x: auto; /* Activation du défilement horizontal */
+        }
+
+        .product-images img {
+            max-width: 80%; /* Largeur des images */
+            height: auto;
+            margin: 10px; /* Marge entre les images */
+        }
+
+        .product-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* Espacement égal entre les éléments */
+            align-items: flex-start; /* Alignement en haut */
+            margin-top: 20px; /* Marge en haut */
+        }
+
+        .product-title {
+            font-size: 1.5em;
+            margin: 0;
+            text-align: left; /* Alignement à gauche */
+        }
+
+        .product-description {
+            text-align: left; /* Alignement à gauche */
+            margin-top: 10px;
+            color: #555;
+            width: 100%; /* Définit la largeur à 100% */
+            resize: vertical; /* Autorise le redimensionnement vertical */
+            min-height: 500px; /* Définit une hauteur minimale */
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product-date {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 20px; /* Marge en bas */
+        }
+
+        .btn-add-to-cart {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-detail">
+            <div class="product-images" id="product-images">
+                <!-- Afficher les images du produit -->
+                {% for image in produit.images.all %}
+                    <img src="{{ image.image.url }}" alt="{{ produit.nom_produit }}">
+                {% endfor %}
+            </div>
+            <div>
+                <!-- Ajouter les boutons pour modifier, ajouter et supprimer des images -->
+                <button onclick="editImage()">Modifier l'image</button>
+                <button onclick="addImage()">Ajouter une image</button>
+                <button onclick="deleteImage()">Supprimer l'image</button>
+            </div>
+            <div class="">
+                <!-- Afficher les détails du produit -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <!-- Champ éditable pour le nom du produit -->
+                        <input type="text" class="product-title" id="product-title" name="nom_produit" value="{{ produit.nom_produit }}">
+                    </div>
+                    <div>
+                        <!-- Champ éditable pour le prix -->
+                        <input type="text" class="product-price" id="product-price" name="prix" value="{{ produit.prix }}">
+                    </div>
+                    <div>
+                        <p class="product-date">Date de publication : {{ produit.publish }}</p>
+                    </div>
+                    <div>
+                        <!-- Champ caché pour l'ID de la catégorie -->
+                        <input type="hidden" name="categorie_id" value="{{ produit.categorie.pk }}">
+                        <!-- Afficher le nom de la catégorie -->
+                        <select name="categorie">
+                            <option value="{{ produit.categorie.nom }}">{{ produit.categorie.nom }}</option>
+                        </select>
+            
+                        <!-- Bouton "+" pour ajouter une nouvelle catégorie -->
+                        <button type="button" id="add-category-btn">+</button>
+                    </div>
+                    <div>
+                        <!-- Champ éditable pour la description -->
+                        <textarea class="product-description" id="product-description" name="description">{{ produit.description }}</textarea>
+                    </div>
+                    
+                    <!-- Boutons pour annuler ou enregistrer les modifications -->
+                    <div>
+                        <button type="button" class="btn-add-to-cart"><a href="{% url 'list_produit' %}">Annuler</a></button>
+                        <button type="submit" class="btn-add-to-cart">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        // Script pour faire défiler les images horizontalement
+        const container = document.getElementById('product-images');
+        let scrollAmount = 0;
+        const speed = 5; // Vitesse du défilement (plus la valeur est grande, plus le défilement est rapide)
+
+        function editImage() {
+            // Logique pour modifier l'image
+            console.log('Modifier l\'image');
+        }
+
+        function addImage() {
+            // Logique pour ajouter une image
+            console.log('Ajouter une image');
+        }
+
+        function deleteImage() {
+            // Logique pour supprimer l'image
+            console.log('Supprimer l\'image');
+        }
+        
+
+        function startScrolling() {
+            const animation = setInterval(() => {
+                container.scrollLeft += 1;
+                scrollAmount += 1;
+
+                if (scrollAmount >= container.scrollWidth - container.clientWidth) {
+                    clearInterval(animation);
+                    setTimeout(() => {
+                        scrollAmount = 0;
+                        container.scrollTo({ left: 0, behavior: 'auto' });
+                        startScrolling();
+                    }, 3000); // Temps d'attente avant de recommencer le défilement (en millisecondes)
+                }
+            }, speed);
+        }
+
+        startScrolling();
+    </script>
+</body>
+</html>

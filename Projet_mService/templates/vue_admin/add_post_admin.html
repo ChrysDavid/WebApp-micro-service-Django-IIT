@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blog Post</title>
+</head>
+<body>
+    <button onclick="goBack()">Retour</button>
+    <div class="container">
+        <h2>Add New Blog Post</h2>
+        <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ post_form.as_p }}
+    {{ image_form.as_p }}  <!-- Ajouter le formulaire d'images -->
+    <label for="id_images">Upload Images:</label>
+    <input type="file" name="images" id="id_images" multiple>
+    <button type="submit">Create Post</button>
+</form>
+
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

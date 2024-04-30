@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajout d'un Produit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product {
+            text-align: center;
+        }
+
+        .product-images {
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .product-images img {
+            max-width: 80%;
+            height: auto;
+            margin: 10px;
+        }
+
+        .product-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .product-title {
+            font-size: 1.5em;
+            margin: 0;
+            text-align: left;
+        }
+
+        .product-description {
+            text-align: left;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .product-price {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product-date {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .btn-add-to-cart {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #0056b3;
+        }
+
+        .product-description {
+            width: 100%;
+            resize: vertical;
+            min-height: 500px;
+        }
+
+        /* Ajout de styles pour les messages d'erreur et de succès */
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Formulaire principal d'ajout de produit -->
+    <form id="product-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <!-- Champ pour le nom du produit -->
+            <input type="text" class="product-title" name="nom_produit" placeholder="Nom du produit">
+
+            <!-- Champ pour le prix -->
+            <input type="text" class="product-price" name="prix" placeholder="Prix">
+
+            <!-- Liste déroulante pour la catégorie -->
+            <select name="categorie">
+                {% for categorie in categories %}
+                <option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Bouton "+" pour ajouter une nouvelle catégorie -->
+            <button type="button" id="add-category-btn">+</button>
+
+            <!-- Champ pour la quantité en stock -->
+            <input type="text" class="quantite_stock" name="quantite_stock" placeholder="Stock">
+
+            <!-- Champ pour téléverser une image -->
+            <input type="file" name="image">
+
+            <!-- Champ pour la description -->
+            <textarea class="product-description" name="description" placeholder="Description"></textarea>
+        </div>
+
+        <!-- Bouton pour soumettre le formulaire -->
+        <div>
+            <button type="submit" class="btn-add-to-cart">Enregistrer</button>
+        </div>
+    </form>
+
+    <!-- Formulaire modal pour ajouter une nouvelle catégorie -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="category-form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <!-- Champ pour le nom de la catégorie -->
+                    <input type="text" class="category-name" name="nom" placeholder="Nom de la catégorie">
+
+                    <!-- Champ pour téléverser une image -->
+                    <input type="file" name="images" multiple>
+
+                </div>
+
+                <!-- Bouton pour soumettre le formulaire -->
+                <div>
+                    <button type="submit" class="btn-add-category">Ajouter Catégorie</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- JavaScript pour afficher/fermer la modal -->
+    <script>
+        // Récupérer la modal
+        var modal = document.getElementById("category-modal");
+
+        // Récupérer le bouton pour ouvrir la modal
+        var btn = document.getElementById("add-category-btn");
+
+        // Récupérer le span pour fermer la modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Lorsque l'utilisateur clique sur le bouton, ouvrir la modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Lorsque l'utilisateur clique sur le span (x), fermer la modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Lorsque l'utilisateur clique n'importe où en dehors de la modal, fermer la modal
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

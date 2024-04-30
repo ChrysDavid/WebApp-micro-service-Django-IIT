@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Empêche le défilement horizontal */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .post-detail {
+            text-align: center; /* Centrer le texte */
+        }
+
+        .post-images {
+            display: flex; /* Utiliser Flexbox pour disposer les images en ligne */
+            overflow-x: auto; /* Activation du défilement horizontal */
+        }
+
+        .post-images img {
+            max-width: 80%; /* Largeur des images */
+            height: auto;
+            margin: 10px; /* Marge entre les images */
+        }
+
+        .post-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* Espacement égal entre les éléments */
+            align-items: flex-start; /* Alignement en haut */
+            margin-top: 20px; /* Marge en haut */
+        }
+
+        .post-title {
+            font-size: 1.5em;
+            margin: 0;
+            text-align: left; /* Alignement à gauche */
+        }
+
+        .post-description {
+            text-align: left; /* Alignement à gauche */
+            margin-top: 10px;
+            color: #555;
+            width: 100%; /* Définit la largeur à 100% */
+            resize: vertical; /* Autorise le redimensionnement vertical */
+            min-height: 500px; /* Définit une hauteur minimale */
+        }
+
+        .post-price {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .post-date {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 20px; /* Marge en bas */
+        }
+
+        .btn-add-to-cart {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="post-detail">
+            <div class="post-images" id="post-images">
+                <!-- Afficher les images du post -->
+                {% for image in images %}
+                    <img src="{{ image.image.url }}" alt="{{ post.title }}">
+                {% endfor %}
+            </div>
+        </div>        
+        <div class="post-info">
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    <input type="text" class="post-title" id="post-title" name="title" value="{{ post.title }}">
+                </div>
+                <div>
+                    <p class="post-date">Date de publication : {{ post.publication_date }}</p>
+                </div>
+                <div class="category-select">
+                    <!-- Afficher la catégorie actuelle -->
+                    <select name="category">
+                        <option value="{{ post.category.pk }}">{{ post.category.name }}</option>
+                    </select>
+                    <!-- Bouton pour ajouter une nouvelle catégorie -->
+                    <button type="button" id="add-category-btn">+</button>
+                </div>
+                <div>
+                    <textarea class="post-description" id="post-description" name="content">{{ post.content }}</textarea>
+                </div>
+                <div class="action-buttons">
+                    <button type="button"><a href="{% url 'List_blog' %}">Annuler</a></button>
+                    <button type="submit">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Script pour faire défiler les images horizontalement
+        const container = document.getElementById('post-images');
+        let scrollAmount = 0;
+        const speed = 5; // Vitesse du défilement (plus la valeur est grande, plus le défilement est rapide)
+
+        function editImage() {
+            // Logique pour modifier l'image
+            console.log('Modifier l\'image');
+        }
+
+        function addImage() {
+            // Logique pour ajouter une image
+            console.log('Ajouter une image');
+        }
+
+        function deleteImage() {
+            // Logique pour supprimer l'image
+            console.log('Supprimer l\'image');
+        }
+        
+
+        function startScrolling() {
+            const animation = setInterval(() => {
+                container.scrollLeft += 1;
+                scrollAmount += 1;
+
+                if (scrollAmount >= container.scrollWidth - container.clientWidth) {
+                    clearInterval(animation);
+                    setTimeout(() => {
+                        scrollAmount = 0;
+                        container.scrollTo({ left: 0, behavior: 'auto' });
+                        startScrolling();
+                    }, 3000); // Temps d'attente avant de recommencer le défilement (en millisecondes)
+                }
+            }, speed);
+        }
+
+        startScrolling();
+    </script>
+</body>
+</html>
